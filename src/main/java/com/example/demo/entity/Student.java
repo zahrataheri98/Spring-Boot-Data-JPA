@@ -50,7 +50,6 @@ public class Student {
     private LocalDate dob;
 
     @Column(name = "age")
-    @Transient
     private Integer age;
 
     public Student() {

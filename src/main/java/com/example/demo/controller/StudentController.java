@@ -3,7 +3,10 @@ package com.example.demo.controller;
 import com.example.demo.entity.Student;
 import com.example.demo.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -21,31 +24,34 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping
-    public List<Student> getAllStudent() {
+//    http://localhost:8080/sc/getAll
+    @RequestMapping(path = "/getAll")
+    public List<Student> getAllStudent(@ModelAttribute Student student) {
         return studentService.getAllStudent();
     }
 
-    @PostMapping
-    public void save(@RequestBody Student student) {
+//    http://localhost:8080/sc/save?fullName=neda&age=25&email=nedaaaa@gmail.com
+    @RequestMapping(path = "/save")
+    public void save(@ModelAttribute Student student) {
         studentService.save(student);
     }
 
-    @PutMapping(path = "{studentId}")
-    public void edit(@PathVariable("studentId") Long studentId,
-                     @RequestParam(required = false) String fullName,
-                     @RequestParam(required = false) String email) {
-        studentService.edit(studentId, fullName, email);
+//    http://localhost:8080/sc/edite?id=63&fullName=zahra&email=taheri@gmail.com
+    @RequestMapping(path = "/edite")
+    public void edite(@ModelAttribute Student student) {
+        studentService.edit(student.getId(), student.getFullName(), student.getEmail());
     }
 
-    @DeleteMapping
-    public void delete(@RequestBody Student student) {
-        studentService.delete(student);
+//    http://localhost:8080/sc/delete?id=82
+    @RequestMapping(path = "/delete")
+    public void deleteById(@ModelAttribute Student student) {
+        studentService.deleteById(student.getId());
     }
 
-    @DeleteMapping(path = "{studentId}")
-    public void deleteById(@PathVariable("studentId") Long studentId) {
-        studentService.deleteById(studentId);
+//    http://localhost:8080/sc/delete/83
+    @RequestMapping(path = "delete/{studentId}")
+    public void deleteByIdVal(@PathVariable("studentId") Long id) {
+        studentService.deleteById(id);
     }
 
 }
